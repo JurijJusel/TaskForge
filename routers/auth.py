@@ -5,7 +5,7 @@ from routers.auth_models import RegisterRequest, LoginRequest, ResetRequest
 
 supabase = get_supabase_client()
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix="/api", tags=["auth"])
 
 @router.post("/register")
 def register(data: RegisterRequest):
