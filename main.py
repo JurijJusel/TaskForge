@@ -1,8 +1,12 @@
 from fastapi import FastAPI
+from routers import auth
+
 
 app = FastAPI()
 
 
-@app.get("/health-check")
+app.include_router(auth.router)
+
+@app.get("/api/health-check", tags=["health_check"])
 def health_check():
     return {"status": "healthy and running"}
