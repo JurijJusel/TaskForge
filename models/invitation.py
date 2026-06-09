@@ -2,15 +2,9 @@ from pydantic import BaseModel
 from uuid import UUID
 
 
-class InvitationCreate(BaseModel):
-    project_id: UUID
-    email: str
-    role: str  # "admin" arba "worker"
-
-
-class InvitationResponse(BaseModel):
+class Invitation(BaseModel):
     id: UUID
     project_id: UUID
     email: str
-    role: str
+    role: str  # "admin" arba "worker"
     status: str  # "pending", "accepted", "declined"

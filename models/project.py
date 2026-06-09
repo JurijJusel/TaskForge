@@ -2,17 +2,18 @@ from pydantic import BaseModel
 from uuid import UUID
 from datetime import datetime
 from typing import Optional
+from models.users import User
 
 
-class ProjectCreate(BaseModel):
-    name: str
-    description: Optional[str] = None
-    status: Optional[str] = None
+class ProjectMember(BaseModel):
+    user: User
+    role: str  # "admin" arba "worker"
 
 
-class ProjectResponse(BaseModel):
+class Project(BaseModel):
     id: UUID
     name: str
     description: Optional[str] = None
     status: Optional[str] = None
     created_at: datetime
+    members: list[ProjectMember] = []
