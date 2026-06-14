@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from supabase_db.connect_supabase import get_supabase_client
-from routers.auth_models import RegisterRequest, LoginRequest, ResetRequest
+from models.auth import UserAuth, UserAuthEmailReset
 
 
 supabase = get_supabase_client()
@@ -8,7 +8,7 @@ supabase = get_supabase_client()
 router = APIRouter(prefix="/api", tags=["auth"])
 
 @router.post("/register")
-def register(data: RegisterRequest):
+def register(data: UserAuth):
     try:
         response = supabase.auth.sign_up({
             "email": data.email,
@@ -25,7 +25,7 @@ def register(data: RegisterRequest):
 
 
 @router.post("/login")
-def login(data: LoginRequest):
+def login(data: UserAuth):
     try:
         response = supabase.auth.sign_in_with_password({
             "email": data.email,
@@ -43,10 +43,10 @@ def login(data: LoginRequest):
 
 
 @router.post("/reset-password")
-def reset_password(data: ResetRequest):
+def reset_password(data: UserAuthEmailReset):
     try:
         supabase.auth.reset_password_email(data.email)
-
+        
         return {"message": "Password reset email sent"}
 
     except Exception as e:
