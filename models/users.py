@@ -6,3 +6,5 @@ class User(BaseModel):
     id: UUID
     email: str
     name: str | None = None
+    password: str
+    project_id: UUID
