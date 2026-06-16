@@ -1,11 +1,15 @@
 from fastapi import APIRouter, HTTPException
 from supabase_db.connect_supabase import get_supabase_client
-from models.auth import UserAuth, UserAuthEmailReset
+from models.users import UserAuth, UserAuthEmailReset
+from core.security import get_current_user
+from fastapi import Depends
+from models.users import UserProfile
 
 
 supabase = get_supabase_client()
 
-router = APIRouter(prefix="/api", tags=["auth"])
+router = APIRouter(prefix="/api", tags=["users"])
+
 
 @router.post("/register")
 def register(data: UserAuth):
@@ -46,8 +50,35 @@ def login(data: UserAuth):
 def reset_password(data: UserAuthEmailReset):
     try:
         supabase.auth.reset_password_email(data.email)
-        
+
         return {"message": "Password reset email sent"}
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+
+@router.get("/me")
+def get_me(current_user = Depends(get_current_user)):
+    return {
+        "user_id": current_user.id,
+        "email": current_user.email,
+        "name": current_user.user_metadata.get("name")
+    }
+
+
+
+@router.put("/me")
+def update_me(data: UserProfile, current_user = Depends(get_current_user)):
+    try:
+        response = supabase.auth.update_user({
+            "data": {"name": data.name}
+        })
+
+        return {
+            "message": "Profile updated successfully",
+            "name": response.user.user_metadata.get("name")
+        }
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
