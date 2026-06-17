@@ -1,0 +1,1 @@
+ C:\\Users\\aurimas\\Desktop\\project\\TaskForge\\ui\\.dart_tool\\flutter_build\\d4355f96f75e7bad96344b96e854abad\\native_assets.json: 
