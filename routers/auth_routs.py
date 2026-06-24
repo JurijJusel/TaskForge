@@ -58,7 +58,7 @@ def reset_password(data: UserAuthEmailReset):
 
 
 
-@router.get("/me")
+@router.get("/profile", summary="Get user profile", description="Returns current authenticated user profile")
 def get_me(current_user = Depends(get_current_user)):
     return {
         "user_id": current_user.id,
@@ -68,7 +68,7 @@ def get_me(current_user = Depends(get_current_user)):
 
 
 
-@router.put("/me")
+@router.put("/profile/name", summary="Add or update user name", description="Add or update current user name")
 def update_me(data: UserProfile, current_user = Depends(get_current_user)):
     try:
         response = supabase.auth.update_user({

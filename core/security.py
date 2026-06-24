@@ -13,10 +13,10 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
         user = supabase.auth.get_user(token)
 
         if not user:
-            raise HTTPException(status_code=401, detail="User not exists")
+            raise HTTPException(status_code=401, detail="User not authenticated")
 
         return user.user
 
     except Exception as e:
         print("KLAIDA:", e)
-        raise HTTPException(status_code=401, detail="User not exists")
+        raise HTTPException(status_code=401, detail="User not authenticated")
